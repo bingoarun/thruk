@@ -1,0 +1,19 @@
+############################################
+# put your own settings into this file
+# settings from this file will override
+# those from the thruk.conf
+############################################
+
+<Component Thruk::Backend>
+<% thruk_conf.keys.sort.each do |peer_name| -%>
+<% data = thruk_conf[peer_name] -%>
+<% type = data['type'] -%>
+    <peer>
+        name    = <%= peer_name %>
+        type    = <%= type %>
+        <options>
+           peer = <%= data['peer'] %>
+        </options>
+    </peer>
+<% end if not thruk_conf.nil? -%>
+</Component>
