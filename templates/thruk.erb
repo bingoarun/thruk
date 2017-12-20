@@ -5,9 +5,8 @@
 ############################################
 
 <Component Thruk::Backend>
-$thruk_conf = $thruk::thruk_conf
-<% thruk_conf.keys.sort.each do |peer_name| -%>
-<% data = thruk_conf[peer_name] -%>
+<% @thruk_conf.keys.sort.each do |peer_name| -%>
+<% data = @thruk_conf[peer_name] -%>
 <% type = data['type'] -%>
     <peer>
         name    = <%= peer_name %>
@@ -16,5 +15,5 @@ $thruk_conf = $thruk::thruk_conf
            peer = <%= data['peer'] %>
         </options>
     </peer>
-<% end if not thruk_conf.nil? -%>
+<% end if not @thruk_conf.nil? -%>
 </Component>
