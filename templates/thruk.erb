@@ -5,7 +5,7 @@
 ############################################
 
 <Component Thruk::Backend>
-$thruk_conf = $thruk::thruk::thruk_conf
+$thruk_conf = $thruk::thruk_conf
 <% thruk_conf.keys.sort.each do |peer_name| -%>
 <% data = thruk_conf[peer_name] -%>
 <% type = data['type'] -%>
