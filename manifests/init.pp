@@ -9,16 +9,16 @@
 class thruk {
 
   package { 'labs-consol-stable' :
-    ensure => 'present',
-    provider => 'rpm',
-    source => 'https://labs.consol.de/repo/stable/rhel7/i386/labs-consol-stable.rhel7.noarch.rpm',
+    ensure          => 'present',
+    provider        => 'rpm',
+    source          => 'https://labs.consol.de/repo/stable/rhel7/i386/labs-consol-stable.rhel7.noarch.rpm',
     install_options => ['--nosignature'],
   }
 
   package { 'thruk':
-    ensure => 'present',
+    ensure          => 'present',
     install_options => ['--nogpgcheck'],
-    notify  => Service['httpd'],
+    notify          => Service['httpd'],
   }
 
   $thruk_conf = hiera('thruk_peers')
@@ -52,7 +52,7 @@ class thruk {
   }
 
   service { 'httpd':
-    ensure  => running,
-    enable  => true,
+    ensure => running,
+    enable => true,
   }
 }
