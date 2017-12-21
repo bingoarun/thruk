@@ -34,7 +34,7 @@ class thruk {
 
     package { 'thruk':
     ensure          => 'present',
-    install_options => ['--nogpgcheck'],
+    #install_options => ['--nogpgcheck'],
     notify          => Service[$package],
   }
 
