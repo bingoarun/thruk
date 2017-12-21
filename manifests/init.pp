@@ -23,7 +23,7 @@ class thruk {
   if $::osfamily == 'debian' {
     $package = 'apache2'
     apt::source { 'labs-consol-stable' :
-      location => 'http://labs.consol.de/repo/stable/ubuntu ,
+      location => 'http://labs.consol.de/repo/stable/ubuntu' ,
       repos    => 'main',
       key      => {
         'id'     => 'F8C1CA08A57B9ED7',
@@ -35,7 +35,7 @@ class thruk {
     package { 'thruk':
     ensure          => 'present',
     install_options => ['--nogpgcheck'],
-    notify          => Service['$package'],
+    notify          => Service[$package],
   }
 
   file {
@@ -45,7 +45,7 @@ class thruk {
       owner   => apache,
       group   => apache,
       mode    => '0644',
-      notify  => Service['$package'],
+      notify  => Service[$package],
       require => Package['thruk'];
 
     '/etc/thruk/cgi.cfg':
@@ -53,12 +53,12 @@ class thruk {
       owner   => apache,
       group   => apache,
       mode    => '0644',
-      notify  => Service['$package'],
+      notify  => Service[$package],
       require => Package['thruk'];
 
   }
 
-  service { '$package':
+  service { $package:
     ensure => running,
     enable => true,
   }
