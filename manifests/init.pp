@@ -23,7 +23,7 @@ class thruk {
 
   if $::osfamily == 'debian' {
     $package = 'apache2'
-    $user = 'root'
+    $user = 'www-data'
     apt::source { 'labs-consol-stable' :
       location => 'http://labs.consol.de/repo/stable/ubuntu' ,
       repos    => 'main',
