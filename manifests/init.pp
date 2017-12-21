@@ -10,14 +10,23 @@ class thruk {
   
   $thruk_conf = hiera('thruk_peers')
 
-  package { 'labs-consol-stable' :
-    ensure          => 'present',
-    provider        => 'rpm',
-    source          => 'https://labs.consol.de/repo/stable/rhel7/i386/labs-consol-stable.rhel7.noarch.rpm',
-    install_options => ['--nosignature'],
+  if $::osfamily == 'redhat' {
+    $package = 'httpd',
+    package { 'labs-consol-stable' :
+      ensure          => 'present',
+      provider        => 'rpm',
+      source          => 'https://labs.consol.de/repo/stable/rhel7/i386/labs-consol-stable.rhel7.noarch.rpm',
+      install_options => ['--nosignature'],
+    }
   }
 
-  package { 'thruk':
+  if $::osfamily == 'debian' {
+    $package = 'apache2',
+    $package_provider = 'apt',
+    $package_source = 'https://labs.consol.de/repo/stable/rhel7/i386/labs-consol-stable.rhel7.noarch.rpm'
+  }
+
+    package { 'thruk':
     ensure          => 'present',
     install_options => ['--nogpgcheck'],
     notify          => Service['httpd'],
