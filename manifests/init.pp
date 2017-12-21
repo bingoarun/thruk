@@ -11,7 +11,7 @@ class thruk {
   $thruk_conf = hiera('thruk_peers')
 
   if $::osfamily == 'redhat' {
-    $package = 'httpd',
+    $package = 'httpd'
     package { 'labs-consol-stable' :
       ensure          => 'present',
       provider        => 'rpm',
@@ -21,15 +21,21 @@ class thruk {
   }
 
   if $::osfamily == 'debian' {
-    $package = 'apache2',
-    $package_provider = 'apt',
-    $package_source = 'https://labs.consol.de/repo/stable/rhel7/i386/labs-consol-stable.rhel7.noarch.rpm'
+    $package = 'apache2'
+    apt::source { 'labs-consol-stable' :
+      location => 'http://labs.consol.de/repo/stable/ubuntu ,
+      repos    => 'main',
+      key      => {
+        'id'     => 'F8C1CA08A57B9ED7',
+        'server' => 'keys.gnupg.net',
+      },
+    }
   }
 
     package { 'thruk':
     ensure          => 'present',
     install_options => ['--nogpgcheck'],
-    notify          => Service['httpd'],
+    notify          => Service['$package'],
   }
 
   file {
@@ -39,7 +45,7 @@ class thruk {
       owner   => apache,
       group   => apache,
       mode    => '0644',
-      notify  => Service['httpd'],
+      notify  => Service['$package'],
       require => Package['thruk'];
 
     '/etc/thruk/cgi.cfg':
@@ -47,12 +53,12 @@ class thruk {
       owner   => apache,
       group   => apache,
       mode    => '0644',
-      notify  => Service['httpd'],
+      notify  => Service['$package'],
       require => Package['thruk'];
 
   }
 
-  service { 'httpd':
+  service { '$package':
     ensure => running,
     enable => true,
   }
