@@ -7,6 +7,8 @@
 # @example
 #   include thruk
 class thruk {
+  
+  $thruk_conf = hiera('thruk_peers')
 
   package { 'labs-consol-stable' :
     ensure          => 'present',
@@ -21,8 +23,6 @@ class thruk {
     notify          => Service['httpd'],
   }
 
-  $thruk_conf = hiera('thruk_peers')
-
   file {
 
     '/etc/thruk/thruk_local.conf':
@@ -32,14 +32,6 @@ class thruk {
       mode    => '0644',
       notify  => Service['httpd'],
       require => Package['thruk'];
-
-#    '/etc/thruk/htpasswd':
-#      source  => 'puppet:///modules/thruk/htpasswd',
-#      owner   => apache,
-#      group   => apache,
-#      mode    => '0644',
-#      notify  => Service['httpd'],
-#      require => Package['thruk'];
 
     '/etc/thruk/cgi.cfg':
       source  => 'puppet:///modules/thruk/thruk_cgi.cfg',
