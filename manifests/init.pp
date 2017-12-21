@@ -12,6 +12,7 @@ class thruk {
 
   if $::osfamily == 'redhat' {
     $package = 'httpd'
+    $user = 'apache'
     package { 'labs-consol-stable' :
       ensure          => 'present',
       provider        => 'rpm',
@@ -22,6 +23,7 @@ class thruk {
 
   if $::osfamily == 'debian' {
     $package = 'apache2'
+    $user = 'root'
     apt::source { 'labs-consol-stable' :
       location => 'http://labs.consol.de/repo/stable/ubuntu' ,
       repos    => 'main',
@@ -42,16 +44,16 @@ class thruk {
 
     '/etc/thruk/thruk_local.conf':
       content => template('thruk/thruk.erb'),
-      owner   => apache,
-      group   => apache,
+      owner   => $user,
+      group   => $user,
       mode    => '0644',
       notify  => Service[$package],
       require => Package['thruk'];
 
     '/etc/thruk/cgi.cfg':
       source  => 'puppet:///modules/thruk/thruk_cgi.cfg',
-      owner   => apache,
-      group   => apache,
+      owner   => $user,
+      group   => $user,
       mode    => '0644',
       notify  => Service[$package],
       require => Package['thruk'];
